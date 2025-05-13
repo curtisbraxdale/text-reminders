@@ -4,7 +4,7 @@ class AgendaItem:
         self.date = date
 
 class CalendarEvent(AgendaItem):
-    def __init__(self, title, date, level, recur_y=False, end_date=None):
+    def __init__(self, title, date, level=1, recur_y=False, end_date=None):
         self.title = title
         self.date = date
         self.level = level
@@ -12,7 +12,7 @@ class CalendarEvent(AgendaItem):
         self.end_date = end_date
 
 class Reminder(AgendaItem):
-    def __init__(self, title, date, level, recur_w=False, recur_m=False):
+    def __init__(self, title, date, level=1, recur_w=False, recur_m=False):
         self.title = title
         self.date = date
         self.level = level
