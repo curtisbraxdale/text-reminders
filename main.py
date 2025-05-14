@@ -41,10 +41,10 @@ def main():
         choice = main_menu()
 
         if choice == "View Agenda":
-            pass
+            print(agenda.create_daily_agenda())
         elif choice == "Add Reminder":
             title = questionary.text("Reminder Title:").ask()
-            date = questionary.text("Date (DD-MM-YY):").ask()
+            date = questionary.text("Date (YYYY-MM-DD):").ask()
             level = questionary.rawselect("How important is this reminder?",
                 choices=[
                     "Reminder appears in daily agenda.",
@@ -58,7 +58,7 @@ def main():
 
         elif choice == "Add Calendar Event":
             title = questionary.text("Calendar Event Title:").ask()
-            date = questionary.text("Date (DD-MM-YY):").ask()
+            date = questionary.text("Date (YYYY-MM-DD):").ask()
             level = questionary.rawselect("How important is this reminder?",
                 choices=[
                     "Calendar Event appears in daily agenda.",
@@ -67,7 +67,7 @@ def main():
             ).ask()
             multi_day = questionary.confirm("Is this a multi-day event?").ask()
             if(multi_day):
-                end_date = questionary.text("End Date (DD-MM-YY):").ask()
+                end_date = questionary.text("End Date (YYYY-MM-DD):").ask()
                 recur_y = questionary.confirm("Do you want this calendar event to recurr yearly?").ask()
                 print("Creating Calendar Event...")
                 agenda.add_calendar_event(title, date, level, recur_y, end_date)
@@ -79,7 +79,7 @@ def main():
 
         elif choice == "Add Todo":
             title = questionary.text("Task:").ask()
-            date_due = questionary.text("Due Date (DD-MM-YY):").ask()
+            date_due = questionary.text("Due Date (YYYY-MM-DD):").ask()
             print("Creating ToDo...")
             agenda.add_todo(title, date_due)
 

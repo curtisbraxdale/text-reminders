@@ -1,7 +1,9 @@
+from datetime import date
+
 class AgendaItem:
-    def __init__(self, title, date):
+    def __init__(self, title, item_date):
         self.title = title
-        self.date = date
+        self.date = date.fromisoformat(item_date)
 
     def to_dict(self):
         return {
@@ -15,38 +17,38 @@ class AgendaItem:
         return cls(data["title"], data["date"])
 
 class CalendarEvent(AgendaItem):
-    def __init__(self, title, date, level=1, recur_y=False, end_date=None):
+    def __init__(self, title, item_date, level=1, recur_y=False, end_date=None):
         self.title = title
-        self.date = date
+        self.item_date = date.fromisoformat(item_date)
         self.level = level
         self.recur_y = recur_y
-        self.end_date = end_date
+        self.end_date = date.fromisoformat(end_date) if end_date else self.item_date
 
 
     def to_dict(self):
         return {
             "type": "CalendarEvent",
             "title": self.title,
-            "date": self.date,
+            "item_date": self.item_date.isoformat(),
             "level": self.level,
             "recur_y": self.recur_y,
-            "end_date": self.end_date
+            "end_date": self.end_date.isoformat()
         }
 
     @classmethod
     def from_dict(cls, data):
         return cls(
             title=data["title"],
-            date=data["date"],
+            item_date=data["item_date"],
             level=data.get("level", 1),
             recur_y=data.get("recur_y", False),
-            end_date=data.get("end_date")
+            end_date=data["end_date"],
         )
 
 class Reminder(AgendaItem):
-    def __init__(self, title, date, level=1, recur_w=False, recur_m=False):
+    def __init__(self, title, item_date, level=1, recur_w=False, recur_m=False):
         self.title = title
-        self.date = date
+        self.item_date = date.fromisoformat(item_date)
         self.level = level
         self.recur_w = recur_w
         self.recur_m = recur_m
@@ -56,7 +58,7 @@ class Reminder(AgendaItem):
         return {
             "type": "Reminder",
             "title": self.title,
-            "date": self.date,
+            "item_date": self.item_date.isoformat(),
             "level": self.level,
             "recur_w": self.recur_w,
             "recur_m": self.recur_m
@@ -66,7 +68,7 @@ class Reminder(AgendaItem):
     def from_dict(cls, data):
         return cls(
             title=data["title"],
-            date=data["date"],
+            item_date=data["item_date"],
             level=data.get("level", 1),
             recur_w=data.get("recur_w", False),
             recur_m=data.get("recur_m", False)
@@ -75,20 +77,20 @@ class Reminder(AgendaItem):
 class ToDo(AgendaItem):
     def __init__(self, title, due):
         self.title = title
-        self.due = due
+        self.due = date.fromisoformat(due)
 
     def to_dict(self):
         return {
             "type": "ToDo",
             "title": self.title,
-            "due": self.due
+            "due": self.due.isoformat(),
         }
 
     @classmethod
     def from_dict(cls, data):
         return cls(
             title=data["title"],
-            due=data["due"]
+            due=data["due"],
         )
 
 def agenda_item_factory(data):
