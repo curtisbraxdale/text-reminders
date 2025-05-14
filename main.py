@@ -4,6 +4,7 @@ import os
 import json
 from agenda.agenda import Agenda
 from agenda.storage import save_agenda, load_agenda
+from agenda.views import view_todos, view_cal_events, view_reminders
 import questionary
 
 DATA_FILE = os.path.join(os.path.dirname(__file__), "data", "agenda.json")
@@ -59,7 +60,7 @@ def main():
         elif choice == "Add Calendar Event":
             title = questionary.text("Calendar Event Title:").ask()
             date = questionary.text("Date (YYYY-MM-DD):").ask()
-            level = questionary.rawselect("How important is this reminder?",
+            level = questionary.rawselect("How important is this Calendar Event?",
                 choices=[
                     "Calendar Event appears in daily agenda.",
                     "Calendar Event appears in weekly & daily agenda."
@@ -84,13 +85,13 @@ def main():
             agenda.add_todo(title, date_due)
 
         elif choice == "View Reminders":
-            pass
+            view_reminders(agenda)
 
         elif choice == "View Calendar Events":
-            pass
+            view_cal_events(agenda)
 
-        elif choice == "View Todos":
-            pass
+        elif choice == "View ToDos":
+            view_todos(agenda)
 
         elif choice == "Save and Exit":
             save_agenda(agenda, DATA_FILE)

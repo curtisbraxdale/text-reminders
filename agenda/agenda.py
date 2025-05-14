@@ -37,11 +37,6 @@ class Agenda:
             day_agenda += "===============\n"
         return day_agenda
 
-
-
-
-        return
-
     def create_weekly_agenda(self):
         pass
 
@@ -49,6 +44,16 @@ class Agenda:
         self.reminders.append(Reminder(title, date, level, recur_w, recur_m))
         print("Reminder created!")
         return
+
+    # Returns a list of 5 ToDo's starting at the given index.Agenda
+    # Intended to act as a "page" of ToDo's.
+    # If the desired ToDo is not in list, can be called again with bigger index.
+    def view_todo_list(self, start, limit):
+        return self.todos[start:start+limit]
+    def view_calendar_list(self, start, limit):
+        return self.calendar_events[start:start+limit]
+    def view_reminder_list(self, start, limit):
+        return self.reminders[start:start+limit]
 
     def add_calendar_event(self, title, date, level, recur_y, end_date=None):
         self.calendar_events.append(CalendarEvent(title, date, level, recur_y, end_date))
@@ -61,8 +66,7 @@ class Agenda:
         return
 
     def delete_old_items(self):
-
-        return
+        pass
 
     @classmethod
     def from_dict(cls, data):
