@@ -1,10 +1,12 @@
 # main.py
 
 import os
+import json
 from agenda.agenda import Agenda
-#from agenda.storage import save_agenda, load_agenda
-from agenda.items import CalendarEvent, Reminder, ToDo
+from agenda.storage import save_agenda, load_agenda
 import questionary
+
+DATA_FILE = os.path.join(os.path.dirname(__file__), "data", "agenda.json")
 
 def main_menu():
     return questionary.rawselect(
@@ -14,13 +16,26 @@ def main_menu():
             "Add Reminder",
             "Add Calendar Event",
             "Add Todo",
+            "View Reminders",
+            "View Calendar Events",
+            "View ToDos",
             "Save and Exit"
         ]
     ).ask()
 
+def load_or_init_agenda():
+    if os.path.exists(DATA_FILE):
+        return load_agenda(DATA_FILE)
+    else:
+        return Agenda()
+
 
 def main():
-    agenda = Agenda()
+    # Need to create or load from json file
+    agenda = load_or_init_agenda()
+
+    # Need to delete old Reminders, CalendarEvents, ToDo's
+    agenda.delete_old_items()
 
     while True:
         choice = main_menu()
@@ -68,7 +83,17 @@ def main():
             print("Creating ToDo...")
             agenda.add_todo(title, date_due)
 
+        elif choice == "View Reminders":
+            pass
+
+        elif choice == "View Calendar Events":
+            pass
+
+        elif choice == "View Todos":
+            pass
+
         elif choice == "Save and Exit":
+            save_agenda(agenda, DATA_FILE)
             print("Goodbye!")
             break
 
