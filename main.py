@@ -1,7 +1,6 @@
 # main.py
 
 import os
-import json
 from agenda.agenda import Agenda
 from agenda.storage import save_agenda, load_agenda
 from agenda.views import view_todos, view_cal_events, view_reminders
@@ -13,7 +12,8 @@ def main_menu():
     return questionary.rawselect(
         "What would you like to do?",
         choices=[
-            "View Agenda",
+            "View Daily Agenda",
+            "View Weekly Agenda",
             "Add Reminder",
             "Add Calendar Event",
             "Add Todo",
@@ -41,8 +41,10 @@ def main():
     while True:
         choice = main_menu()
 
-        if choice == "View Agenda":
+        if choice == "View Daily Agenda":
             print(agenda.create_daily_agenda())
+        elif choice == "View Weekly Agenda":
+            print(agenda.create_weekly_agenda())
         elif choice == "Add Reminder":
             title = questionary.text("Reminder Title:").ask()
             date = questionary.text("Date (YYYY-MM-DD):").ask()

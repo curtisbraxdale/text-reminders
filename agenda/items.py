@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 
 class AgendaItem:
     def __init__(self, title, item_date):
@@ -35,6 +35,12 @@ class CalendarEvent(AgendaItem):
             "end_date": self.end_date.isoformat()
         }
 
+    def is_this_week(self):
+        today = date.today()
+        start = today - timedelta(days=today.weekday())
+        end = start + timedelta(days=6)
+        return start <= self.item_date <= end
+
     @classmethod
     def from_dict(cls, data):
         return cls(
@@ -63,6 +69,12 @@ class Reminder(AgendaItem):
             "recur_w": self.recur_w,
             "recur_m": self.recur_m
         }
+
+    def is_this_week(self):
+        today = date.today()
+        start = today - timedelta(days=today.weekday())
+        end = start + timedelta(days=6)
+        return start <= self.item_date <= end
 
     @classmethod
     def from_dict(cls, data):

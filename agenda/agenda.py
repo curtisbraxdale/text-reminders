@@ -20,15 +20,13 @@ class Agenda:
             day_agenda += "~REMINDERS~\n"
             for reminder in self.reminders:
                 if reminder.item_date == date.today():
-                    #day_reminders.append(reminder)
-                    day_agenda += f"{reminder.title}\n"
+                    day_agenda += f"{reminder.title} ({reminder.item_date.strftime('%m-%d')})\n"
             day_agenda += "===============\n"
         if len(self.calendar_events) > 0:
             day_agenda += "~CALENDAR~\n"
             for event in self.calendar_events:
                 if (event.item_date <= date.today()) and (event.end_date >= date.today()):
-                    #day_events.append(event)
-                    day_agenda += f"{event.title}\n"
+                    day_agenda += f"{event.title} ({event.item_date.strftime('%m-%d')})\n"
             day_agenda += "===============\n"
         if len(self.todos) > 0:
             day_agenda += "~TO DO~\n"
@@ -38,7 +36,25 @@ class Agenda:
         return day_agenda
 
     def create_weekly_agenda(self):
-        pass
+        weekly_agenda = f"Week of {date.today().strftime('%A %b %d')}\n===============\n"
+        if len(self.reminders) > 0:
+            weekly_agenda += "~WEEKLY REMINDERS~\n"
+            for reminder in self.reminders:
+                if reminder.is_this_week():
+                    weekly_agenda += f"{reminder.title}\n"
+            weekly_agenda += "===============\n"
+        if len(self.calendar_events) > 0:
+            weekly_agenda += "~WEEKLY CALENDAR~\n"
+            for event in self.calendar_events:
+                if event.is_this_week():
+                    weekly_agenda += f"{event.title}\n"
+            weekly_agenda += "===============\n"
+        if len(self.todos) > 0:
+            weekly_agenda += "~TO DO~\n"
+            for todo in self.todos:
+                weekly_agenda += f"{todo.title} (Due: {todo.due.strftime('%m-%d')})\n"
+            weekly_agenda += "===============\n"
+        return weekly_agenda
 
     def add_reminder(self, title, date, level, recur_w, recur_m):
         self.reminders.append(Reminder(title, date, level, recur_w, recur_m))
