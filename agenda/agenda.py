@@ -61,9 +61,6 @@ class Agenda:
         print("Reminder created!")
         return
 
-    # Returns a list of 5 ToDo's starting at the given index.Agenda
-    # Intended to act as a "page" of ToDo's.
-    # If the desired ToDo is not in list, can be called again with bigger index.
     def view_todo_list(self, start, limit):
         return self.todos[start:start+limit]
     def view_calendar_list(self, start, limit):
@@ -82,8 +79,25 @@ class Agenda:
         return
 
     def delete_old_items(self):
-        pass
-
+        for reminder in self.reminders:
+            if reminder.item_date < date.today():
+                if reminder.recur_w:
+                    new_item_date = reminder.item_date.AddDays(7)
+                    reminder.item_date = new_item_date
+                elif reminder.recur_m:
+                    new_item_date = reminder.item_date.AddMonths(1)
+                    reminder.item_date = new_item_date
+                else:
+                    self.reminders.remove(reminder)
+        for cal_event in self.calendar_events:
+            if cal_event.end_date < date.today():
+                if cal_event.recur_y:
+                    new_item_date = cal_event.item_date.AddYears(1)
+                    new_end_date = cal_event.end_date.AddYears(1)
+                    cal_event.item_date = new_item_date
+                    cal_event.end_date = new_end_date
+                else:
+                    self.reminders.remove(cal_event)
     @classmethod
     def from_dict(cls, data):
         agenda = cls()

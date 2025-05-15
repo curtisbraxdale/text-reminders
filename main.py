@@ -32,10 +32,8 @@ def load_or_init_agenda():
 
 
 def main():
-    # Need to create or load from json file
     agenda = load_or_init_agenda()
 
-    # Need to delete old Reminders, CalendarEvents, ToDo's
     agenda.delete_old_items()
 
     while True:
