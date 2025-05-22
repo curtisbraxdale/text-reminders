@@ -13,9 +13,12 @@ def send_agenda_text(agenda):
     # Find your Account SID and Auth Token at twilio.com/console
     # and set the environment variables. See http://twil.io/secure
     client = Client(account_sid, auth_token)
-
+    if today.weekday() == 0:
+        message_body = agenda.create_weekly_agenda()
+    else:
+        message_body = agenda.create_daily_agenda()
     message = client.messages.create(
-        body="This is a test message sent from the Twilio Api.",
+        body=message_body,
         from_=twilio_phone,
         to=personal_phone,
     )
